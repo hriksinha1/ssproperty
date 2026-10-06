@@ -1,7 +1,30 @@
 import Link from 'next/link'
-import { ArrowRight, Facebook, Instagram, Linkedin, Mail, MapPin, Menu, Phone, Youtube } from 'lucide-react'
 
 import { navItems, siteConfig } from '@/config/site'
+
+function ArrowRightIcon() {
+  return <span aria-hidden="true">→</span>
+}
+
+function MapPinIcon() {
+  return <span aria-hidden="true">⌖</span>
+}
+
+function PhoneIcon() {
+  return <span aria-hidden="true">☎</span>
+}
+
+function MailIcon() {
+  return <span aria-hidden="true">✉</span>
+}
+
+function MenuIcon() {
+  return <span aria-hidden="true">☰</span>
+}
+
+function SocialIcon({ label }: { label: string }) {
+  return <span aria-hidden="true">{label}</span>
+}
 
 export function SiteHeader() {
   return (
@@ -32,7 +55,7 @@ export function SiteHeader() {
         </div>
 
         <button type="button" aria-label="Open menu" className="flex h-11 w-11 items-center justify-center border border-[var(--border-subtle)] lg:hidden">
-          <Menu size={18} />
+          <MenuIcon />
         </button>
       </div>
     </header>
@@ -52,16 +75,16 @@ export function SiteFooter() {
             <p className="mt-5 max-w-xs text-sm leading-7 text-[rgba(247,245,239,0.7)]">{siteConfig.tagline}</p>
             <div className="mt-6 flex flex-wrap gap-2">
               <a href={siteConfig.instagram} aria-label="Instagram" className="flex h-10 w-10 items-center justify-center border border-[rgba(247,245,239,0.2)] text-[var(--text-inverse)]">
-                <Instagram size={14} />
+                <SocialIcon label="◎" />
               </a>
               <a href={siteConfig.facebook} aria-label="Facebook" className="flex h-10 w-10 items-center justify-center border border-[rgba(247,245,239,0.2)] text-[var(--text-inverse)]">
-                <Facebook size={14} />
+                <SocialIcon label="f" />
               </a>
               <a href={siteConfig.linkedin} aria-label="LinkedIn" className="flex h-10 w-10 items-center justify-center border border-[rgba(247,245,239,0.2)] text-[var(--text-inverse)]">
-                <Linkedin size={14} />
+                <SocialIcon label="in" />
               </a>
               <a href={siteConfig.youtube} aria-label="YouTube" className="flex h-10 w-10 items-center justify-center border border-[rgba(247,245,239,0.2)] text-[var(--text-inverse)]">
-                <Youtube size={14} />
+                <SocialIcon label="▶" />
               </a>
             </div>
           </div>
@@ -92,17 +115,17 @@ export function SiteFooter() {
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-yellow)]">Visit</p>
             <div className="mt-5 space-y-4 text-sm text-[rgba(247,245,239,0.72)]">
               <div className="flex items-start gap-3">
-                <MapPin size={14} className="mt-1 text-[var(--brand-yellow)]" />
+                <span className="mt-1 text-[var(--brand-yellow)]"><MapPinIcon /></span>
                 <span>{siteConfig.address}</span>
               </div>
               {siteConfig.phone ? (
                 <a href={`tel:${siteConfig.phone}`} className="flex items-center gap-3">
-                  <Phone size={14} className="text-[var(--brand-yellow)]" />
+                  <span className="text-[var(--brand-yellow)]"><PhoneIcon /></span>
                   <span>{siteConfig.phone}</span>
                 </a>
               ) : null}
               <a href={`mailto:${siteConfig.email}`} className="flex items-center gap-3">
-                <Mail size={14} className="text-[var(--brand-yellow)]" />
+                <span className="text-[var(--brand-yellow)]"><MailIcon /></span>
                 <span>{siteConfig.email}</span>
               </a>
             </div>
@@ -116,7 +139,7 @@ export function SiteFooter() {
             <Link href="/terms">Terms</Link>
             <Link href="/contact" className="inline-flex items-center gap-2 text-[var(--brand-yellow)]">
               Tell us what you need
-              <ArrowRight size={12} />
+              <ArrowRightIcon />
             </Link>
           </div>
         </div>

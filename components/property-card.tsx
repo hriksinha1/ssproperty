@@ -1,8 +1,19 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Heart, MapPin } from 'lucide-react'
 
 import type { PropertyRecord } from '@/data/properties'
+
+function ArrowRightIcon() {
+  return <span aria-hidden="true">→</span>
+}
+
+function HeartIcon() {
+  return <span aria-hidden="true">♥</span>
+}
+
+function PinIcon() {
+  return <span aria-hidden="true">⌖</span>
+}
 
 export function PropertyCard({ property }: { property: PropertyRecord }) {
   return (
@@ -23,7 +34,7 @@ export function PropertyCard({ property }: { property: PropertyRecord }) {
           aria-label={`Save ${property.title}`}
           className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center border border-black/10 bg-white/85 text-[var(--brand-black)] backdrop-blur-sm"
         >
-          <Heart size={16} />
+          <HeartIcon />
         </button>
       </div>
 
@@ -32,7 +43,7 @@ export function PropertyCard({ property }: { property: PropertyRecord }) {
         <div>
           <h3 className="text-[1.6rem] font-semibold leading-tight tracking-[-0.04em] text-[var(--text-primary)]">{property.title}</h3>
           <div className="mt-2 flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-            <MapPin size={14} />
+            <PinIcon />
             <span>{property.locality}</span>
           </div>
         </div>
@@ -43,11 +54,11 @@ export function PropertyCard({ property }: { property: PropertyRecord }) {
             <div className="mt-1 text-xs uppercase tracking-[0.14em] text-[var(--text-muted)]">{property.meta}</div>
           </div>
           <Link
-            href={`/property/${property.slug}`}
+            href={`/properties/${property.slug}`}
             className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-primary)]"
           >
             View property
-            <ArrowRight size={14} />
+            <ArrowRightIcon />
           </Link>
         </div>
       </div>
