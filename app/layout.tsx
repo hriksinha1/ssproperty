@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'S S Property | Find a place that feels like home',
-  description: 'Discover considered homes, workspaces and land across Kolkata with S S Property.',
+  title: 'S S Property | Kolkata, made personal',
+  description: 'Thoughtfully chosen homes, commercial spaces and land across Kolkata, guided by a local team that listens first.',
   generator: 'v0.app',
   icons: {
     icon: [
