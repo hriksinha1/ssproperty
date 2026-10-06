@@ -2,6 +2,7 @@
 import Link from 'next/link'
 
 import { PropertyCard } from '@/components/property-card'
+import { locations } from '@/data/locations'
 import { properties } from '@/data/properties'
 
 export default function HomePage() {
@@ -47,12 +48,7 @@ export default function HomePage() {
               Locality
               <select name="location" defaultValue="" className="mt-2 block h-12 w-full border border-[var(--border-subtle)] bg-white px-3 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--brand-yellow)]">
                 <option value="">Any locality</option>
-                <option value="New Town">New Town</option>
-                <option value="Salt Lake">Salt Lake</option>
-                <option value="Rajarhat">Rajarhat</option>
-                <option value="Mukundapur">Mukundapur</option>
-                <option value="VIP Road">VIP Road</option>
-                <option value="Howrah">Howrah</option>
+                {locations.map((location) => <option key={location.slug} value={location.name}>{location.name}</option>)}
               </select>
             </label>
             <label className="block text-xs font-semibold text-[var(--text-secondary)]">

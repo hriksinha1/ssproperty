@@ -77,22 +77,26 @@ export function SiteFooter() {
 
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-yellow)]">Explore</p>
-            <div className="mt-5 space-y-3 text-sm text-[rgba(247,245,239,0.72)]">
+            <div className="mt-5 grid gap-3 text-sm text-[rgba(247,245,239,0.72)]">
               <Link href="/properties">Properties</Link>
               <Link href="/buy">Buy</Link>
               <Link href="/rent">Rent</Link>
               <Link href="/commercial">Commercial</Link>
               <Link href="/land">Land</Link>
+              <Link href="/locations">Locations</Link>
+              <Link href="/favorites">Favourites</Link>
+              <Link href="/compare">Compare</Link>
             </div>
           </div>
 
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-yellow)]">Company</p>
-            <div className="mt-5 space-y-3 text-sm text-[rgba(247,245,239,0.72)]">
+            <div className="mt-5 grid gap-3 text-sm text-[rgba(247,245,239,0.72)]">
               <Link href="/about">About</Link>
               <Link href="/services">Services</Link>
               <Link href="/sell-property">Sell property</Link>
               <Link href="/faq">FAQ</Link>
+              <Link href="/blog">Blog</Link>
               <Link href="/contact">Contact</Link>
             </div>
           </div>
