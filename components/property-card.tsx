@@ -1,19 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { PropertyActions } from '@/components/property-collection'
 import type { PropertyRecord } from '@/data/properties'
-
-function ArrowRightIcon() {
-  return <span aria-hidden="true">→</span>
-}
-
-function HeartIcon() {
-  return <span aria-hidden="true">♥</span>
-}
-
-function PinIcon() {
-  return <span aria-hidden="true">⌖</span>
-}
 
 export function PropertyCard({ property }: { property: PropertyRecord }) {
   return (
@@ -29,13 +18,9 @@ export function PropertyCard({ property }: { property: PropertyRecord }) {
         <span className="absolute left-4 top-4 bg-[var(--brand-yellow)] px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--brand-black)]">
           {property.status}
         </span>
-        <button
-          type="button"
-          aria-label={`Save ${property.title}`}
-          className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center border border-black/10 bg-white/85 text-[var(--brand-black)] backdrop-blur-sm"
-        >
-          <HeartIcon />
-        </button>
+        <div className="absolute right-4 top-4">
+          <PropertyActions property={property} />
+        </div>
       </div>
 
       <div className="space-y-4 p-5">
@@ -43,7 +28,6 @@ export function PropertyCard({ property }: { property: PropertyRecord }) {
         <div>
           <h3 className="text-[1.6rem] font-semibold leading-tight tracking-[-0.04em] text-[var(--text-primary)]">{property.title}</h3>
           <div className="mt-2 flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-            <PinIcon />
             <span>{property.locality}</span>
           </div>
         </div>
@@ -58,7 +42,7 @@ export function PropertyCard({ property }: { property: PropertyRecord }) {
             className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-primary)]"
           >
             View property
-            <ArrowRightIcon />
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>
