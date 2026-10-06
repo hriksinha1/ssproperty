@@ -1,5 +1,63 @@
-'use client'
-import Link from 'next/link'
-import { ArrowRight, Check, MapPin } from 'lucide-react'
-import { useState } from 'react'
-export default function ContactPage() { const [sent, setSent] = useState(false); return <main className="min-h-screen bg-[#f6f5f1] text-[#151515]"><header className="bg-[#151515] text-white"><div className="mx-auto flex h-20 max-w-[1380px] items-center justify-between px-5 lg:px-10"><Link href="/" className="flex items-center gap-2.5"><span className="flex size-10 items-center justify-center bg-[#f6c515] text-xl font-black text-black">SS</span><span className="text-[15px] font-bold tracking-[0.18em]">PROPERTY</span></Link><Link href="/properties" className="text-xs font-bold uppercase tracking-widest">Browse properties</Link></div></header><div className="mx-auto grid max-w-[1380px] gap-14 px-5 py-16 lg:grid-cols-[0.85fr_1.15fr] lg:px-10 lg:py-24"><div><p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-black/45">Let&apos;s talk property</p><h1 className="text-5xl font-semibold leading-none tracking-[-0.06em] lg:text-7xl">A good place to <em className="font-serif font-normal">start.</em></h1><p className="mt-7 max-w-md text-base leading-8 text-black/60">Tell us what you&apos;re looking for. We&apos;ll listen, ask the right questions and help you take the next step.</p><div className="mt-12 border-t border-black/10 pt-6"><p className="flex items-start gap-3 text-sm leading-7 text-black/60"><MapPin className="mt-1 shrink-0" size={17} />PS Newtown Square, Chinar Park / Atghora Newtown Road, Kolkata 700136</p><p className="mt-5 text-sm font-semibold">hello@ssproperty.in</p><p className="mt-2 text-sm font-semibold">+91 98300 00000</p></div></div><div className="bg-white p-6 sm:p-10">{sent ? <div className="flex min-h-[420px] flex-col items-center justify-center text-center"><span className="flex size-14 items-center justify-center rounded-full bg-[#f6c515]"><Check /></span><h2 className="mt-6 text-3xl font-semibold">We&apos;ll be in touch.</h2><p className="mt-3 max-w-sm text-sm leading-7 text-black/55">Thank you for reaching out. An S S Property advisor will contact you shortly.</p><Link href="/" className="mt-8 text-xs font-bold uppercase tracking-widest underline decoration-[#f6c515] decoration-4 underline-offset-8">Back home</Link></div> : <form onSubmit={(event) => { event.preventDefault(); setSent(true) }} className="flex flex-col gap-6"><div><label htmlFor="name" className="text-xs font-bold uppercase tracking-widest">Your name</label><input id="name" required className="mt-3 w-full border-b border-black/20 bg-transparent px-0 py-3 outline-none focus:border-[#f6c515]" placeholder="Full name" /></div><div><label htmlFor="email" className="text-xs font-bold uppercase tracking-widest">Email or phone</label><input id="email" required className="mt-3 w-full border-b border-black/20 bg-transparent px-0 py-3 outline-none focus:border-[#f6c515]" placeholder="How should we reach you?" /></div><div><label htmlFor="need" className="text-xs font-bold uppercase tracking-widest">I&apos;m looking to</label><select id="need" className="mt-3 w-full border-b border-black/20 bg-transparent px-0 py-3 outline-none"><option>Buy a property</option><option>Rent a property</option><option>List my property</option><option>Explore commercial space</option></select></div><div><label htmlFor="message" className="text-xs font-bold uppercase tracking-widest">A little more</label><textarea id="message" rows={4} className="mt-3 w-full resize-none border-b border-black/20 bg-transparent px-0 py-3 outline-none focus:border-[#f6c515]" placeholder="Tell us what you have in mind" /></div><button className="flex items-center justify-center gap-3 bg-[#f6c515] px-7 py-4 text-xs font-bold uppercase tracking-widest transition hover:bg-black hover:text-white">Send enquiry <ArrowRight size={16} /></button></form>}</div></div></main> }
+﻿import Link from 'next/link'
+
+export default function ContactPage() {
+  return (
+    <div className="mx-auto max-w-[1360px] px-4 py-16 md:px-6 lg:px-8">
+      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">Contact</p>
+          <h1 className="mt-2 font-display text-[3rem] tracking-[-0.05em] md:text-[5rem]">Let’s talk property.</h1>
+          <p className="mt-6 max-w-xl text-lg leading-8 text-[var(--text-secondary)]">
+            Tell us what you’re looking for and we’ll help you narrow the next steps with practical guidance.
+          </p>
+
+          <div className="mt-10 space-y-4 text-base text-[var(--text-secondary)]">
+            <p>PS Newtown Square, Chinar Park / Atghora Newtown Road, Kolkata 700136</p>
+            <p>hello@ssproperty.in</p>
+            <p>+91 98300 00000</p>
+          </div>
+        </div>
+
+        <div className="border border-[var(--border-subtle)] bg-[var(--surface-primary)] p-6 md:p-8">
+          <form className="space-y-5">
+            <label className="block text-sm font-medium text-[var(--text-primary)]">
+              Name
+              <input
+                type="text"
+                placeholder="Your name"
+                className="mt-2 block w-full border border-[var(--border-subtle)] bg-[var(--surface-secondary)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--brand-yellow)]"
+              />
+            </label>
+
+            <label className="block text-sm font-medium text-[var(--text-primary)]">
+              Email
+              <input
+                type="email"
+                placeholder="you@example.com"
+                className="mt-2 block w-full border border-[var(--border-subtle)] bg-[var(--surface-secondary)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--brand-yellow)]"
+              />
+            </label>
+
+            <label className="block text-sm font-medium text-[var(--text-primary)]">
+              Property requirement
+              <textarea
+                rows={5}
+                placeholder="Tell us about the kind of property or requirement you're interested in"
+                className="mt-2 block w-full resize-none border border-[var(--border-subtle)] bg-[var(--surface-secondary)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--brand-yellow)]"
+              />
+            </label>
+
+            <button type="submit" className="inline-flex items-center justify-center bg-[var(--brand-yellow)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--brand-black)]">
+              Send enquiry
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div className="mt-12 flex flex-wrap gap-4 text-[11px] font-bold uppercase tracking-[0.18em]">
+        <Link href="/properties" className="border border-[var(--border-subtle)] px-4 py-2">Browse properties</Link>
+        <Link href="/sell-property" className="border border-[var(--border-subtle)] px-4 py-2">Sell your property</Link>
+      </div>
+    </div>
+  )
+}
