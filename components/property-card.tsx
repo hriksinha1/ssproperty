@@ -15,9 +15,12 @@ export function PropertyCard({ property }: { property: PropertyRecord }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition duration-500 group-hover:scale-[1.03]"
         />
-        <span className="absolute left-4 top-4 bg-[var(--brand-yellow)] px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--brand-black)]">
-          {property.status}
-        </span>
+        <div className="absolute left-4 top-4 grid justify-items-start gap-2">
+          <span className="bg-[var(--brand-yellow)] px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--brand-black)]">
+            {property.status}
+          </span>
+          {property.isDemo ? <span className="bg-white/90 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--brand-black)]">Illustrative listing</span> : null}
+        </div>
         <div className="absolute right-4 top-4">
           <PropertyActions property={property} />
         </div>

@@ -1,9 +1,11 @@
 ﻿import Link from 'next/link'
 
-import { PropertyCard } from '@/components/property-card'
+import { PropertyBrowser, type PropertySearchParams } from '@/components/property-browser'
 import { properties } from '@/data/properties'
 
-export default function PropertiesPage() {
+export default async function PropertiesPage({ searchParams }: { searchParams: Promise<PropertySearchParams> }) {
+  const filters = await searchParams
+
   return (
     <div className="mx-auto max-w-[1360px] px-4 py-16 md:px-6 lg:px-8">
       <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -19,11 +21,7 @@ export default function PropertiesPage() {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {properties.map((property) => (
-          <PropertyCard key={property.id} property={property} />
-        ))}
-      </div>
+      <PropertyBrowser properties={properties} allProperties={properties} searchParams={filters} />
     </div>
   )
 }

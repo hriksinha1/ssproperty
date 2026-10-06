@@ -28,7 +28,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
           <Image src={location.image} alt={location.name} fill className="object-cover" sizes="100vw" />
         </div>
         <div className="p-6 md:p-8">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">{location.propertyCount} listings</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">Area guide</p>
           <h1 className="mt-3 font-display text-[3rem] tracking-[-0.05em] md:text-[5rem]">{location.name}</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--text-secondary)]">{location.summary}</p>
         </div>

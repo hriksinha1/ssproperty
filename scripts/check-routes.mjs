@@ -1,108 +1,111 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import ts from 'typescript'
 
-const appRoot = path.join(process.cwd(), 'app')
-const routeSet = new Set()
+const projectRoot = process.cwd()
+const appRoot = path.join(projectRoot, 'app')
+const sourceRoots = [appRoot, path.join(projectRoot, 'components')]
+const routes = new Set()
+const sourceFiles = []
 
-function normalizeRouteFromFile(relativePath) {
-  const route = relativePath
-    .replace(/\\/g, '/')
-    .replace(/^app\//, '')
-    .replace(/\/page\.(tsx|ts|jsx|js)$/, '')
-    .replace(/\/layout\.(tsx|ts|jsx|js)$/, '')
-    .replace(/\/route\.(ts|js)$/, '')
-    .replace(/\/not-found\.(tsx|ts|jsx|js)$/, '/not-found')
-    .replace(/\/robots\.(ts|js)$/, '/robots')
-    .replace(/\/sitemap\.(ts|js)$/, '/sitemap')
-    .replace(/\/globals\.css$/, '')
+function routeFromFile(filePath) {
+  const relative = path.relative(appRoot, filePath).replace(/\\/g, '/')
+  const segments = relative.split('/')
+  const filename = segments.pop()
 
-  if (!route || route === 'index') {
-    return '/'
+  if (filename === 'not-found.tsx' || filename === 'not-found.jsx') return null
+  if (filename === 'robots.ts') return '/robots.txt'
+  if (filename === 'sitemap.ts') return '/sitemap.xml'
+
+  if (/^page\.(tsx|ts|jsx|js)$/.test(filename)) {
+    return segments.length ? `/${segments.join('/')}` : '/'
   }
 
-  return `/${route.replace(/^\//, '')}`
+  if (/^route\.(ts|js)$/.test(filename)) {
+    return segments.length ? `/${segments.join('/')}` : '/'
+  }
+
+  return null
 }
 
-function walk(dir) {
+function collect(dir) {
+  if (!fs.existsSync(dir)) return
+
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name)
+    const filePath = path.join(dir, entry.name)
     if (entry.isDirectory()) {
-      walk(full)
+      collect(filePath)
       continue
     }
 
-    const isPageLike = /(?:^|\/)(?:page|layout|route|not-found|robots|sitemap)\.[jt]sx?$/.test(entry.name) || /(?:^|\/)(?:page|layout|route|not-found|robots|sitemap)\.[jt]s$/.test(entry.name)
-    if (!isPageLike) continue
+    if (!/\.(tsx|ts|jsx|js)$/.test(entry.name)) continue
+    sourceFiles.push(filePath)
 
-    const relative = path.relative(process.cwd(), full)
-    const route = normalizeRouteFromFile(relative)
-    routeSet.add(route)
+    if (dir.startsWith(appRoot)) {
+      const route = routeFromFile(filePath)
+      if (route) routes.add(route)
+    }
   }
 }
 
-function routeMatches(target, expected) {
-  if (target === expected) return true
-  const targetParts = target.split('/').filter(Boolean)
-  const expectedParts = expected.split('/').filter(Boolean)
+function matchesRoute(target, route) {
+  const targetSegments = target.split('/').filter(Boolean)
+  const routeSegments = route.split('/').filter(Boolean)
+  if (targetSegments.length !== routeSegments.length) return false
 
-  if (targetParts.length !== expectedParts.length) {
-    return false
-  }
-
-  return expectedParts.every((part, index) => {
-    if (part.startsWith('[') && part.endsWith(']')) return true
-    return part === targetParts[index]
+  return routeSegments.every((segment, index) => {
+    if (segment.startsWith('[') && segment.endsWith(']')) return true
+    return segment === targetSegments[index]
   })
 }
 
-function getHrefValues(filePath) {
+function hrefsFromSource(filePath) {
   const text = fs.readFileSync(filePath, 'utf8')
-  const matches = [...text.matchAll(/href\s*=\s*["']([^"']+)["']/g)]
-  return matches.map((match) => match[1])
-}
+  const source = ts.createSourceFile(filePath, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+  const hrefs = []
 
-walk(appRoot)
+  function visit(node) {
+    if (ts.isJsxAttribute(node) && node.name.getText(source) === 'href' && node.initializer) {
+      const value = node.initializer
+      if (ts.isStringLiteral(value)) {
+        hrefs.push(value.text)
+      } else if (ts.isJsxExpression(value) && value.expression) {
+        if (ts.isStringLiteral(value.expression) || ts.isNoSubstitutionTemplateLiteral(value.expression)) {
+          hrefs.push(value.expression.text)
+        } else if (ts.isTemplateExpression(value.expression)) {
+          const template = value.expression
+          const dynamicPath = template.head.text + template.templateSpans.map((span) => `[param]${span.literal.text}`).join('')
+          hrefs.push(dynamicPath)
+        }
+      }
+    }
 
-const fileList = []
-function collectFiles(dir) {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name)
-    if (entry.isDirectory()) {
-      collectFiles(full)
-      continue
-    }
-    if (entry.name.endsWith('.tsx') || entry.name.endsWith('.ts') || entry.name.endsWith('.jsx') || entry.name.endsWith('.js')) {
-      fileList.push(full)
-    }
+    ts.forEachChild(node, visit)
   }
+
+  visit(source)
+  return hrefs
 }
-collectFiles(appRoot)
+
+for (const root of sourceRoots) collect(root)
 
 const errors = []
-for (const file of fileList) {
-  const hrefs = getHrefValues(file)
-  for (const href of hrefs) {
-    if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#') || href.startsWith('javascript:')) {
-      continue
-    }
+for (const filePath of sourceFiles) {
+  for (const href of hrefsFromSource(filePath)) {
+    if (!href || href.startsWith('http') || href.startsWith('//') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) continue
 
-    const target = href.split('?')[0].split('#')[0]
-    if (target === '/') {
-      continue
-    }
-
-    const route = target.startsWith('/') ? target : `/${target}`
-    const valid = [...routeSet].some((candidate) => routeMatches(route, candidate))
-    if (!valid) {
-      errors.push(`${path.relative(process.cwd(), file)} -> ${href}`)
+    const route = href.split(/[?#]/, 1)[0]
+    if (!route.startsWith('/')) continue
+    if (![...routes].some((candidate) => matchesRoute(route, candidate))) {
+      errors.push(`${path.relative(projectRoot, filePath)} -> ${href}`)
     }
   }
 }
 
 if (errors.length) {
-  console.error('Broken links found:')
+  console.error('Broken internal links found:')
   console.error(errors.join('\n'))
   process.exit(1)
 }
 
-console.log(`Checked ${fileList.length} app files and ${routeSet.size} routes; all internal links resolve.`)
+console.log(`Checked ${sourceFiles.length} app/component files and ${routes.size} routes; all static internal links resolve.`)

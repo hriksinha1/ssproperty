@@ -29,6 +29,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
 
         <div className="border border-[var(--border-subtle)] bg-[var(--surface-primary)] p-6 md:p-8">
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">{property.id}</p>
+          {property.isDemo ? <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--text-muted)]">Illustrative listing · verify details before making a decision</p> : null}
           <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] md:text-[3.1rem]">{property.title}</h1>
           <p className="mt-3 text-base text-[var(--text-secondary)]">{property.locality}, Kolkata</p>
           <p className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">{property.price}</p>
@@ -38,7 +39,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             <span className="border border-[var(--border-subtle)] px-3 py-2">{property.category}</span>
           </div>
           <div className="mt-8 flex gap-3">
-            <Link href="/contact" className="inline-flex items-center justify-center bg-[var(--brand-yellow)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--brand-black)]">
+            <Link href={`/contact?property=${property.id}`} className="inline-flex items-center justify-center bg-[var(--brand-yellow)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--brand-black)]">
               Enquire now
             </Link>
             <Link href="/properties" className="inline-flex items-center justify-center border border-[var(--border-subtle)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-primary)]">

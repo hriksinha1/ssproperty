@@ -16,7 +16,7 @@ export default function LocationsPage() {
               <Image src={location.image} alt={location.name} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
             </div>
             <div className="p-5">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">{location.propertyCount} listings</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">Area guide</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">{location.name}</h2>
               <p className="mt-2 text-base leading-7 text-[var(--text-secondary)]">{location.label}</p>
             </div>
