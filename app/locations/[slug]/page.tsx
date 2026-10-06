@@ -35,7 +35,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
       </div>
 
       <div className="mt-12">
-        <h2 className="font-display text-[2.4rem] tracking-[-0.04em]">Available in this area</h2>
+        <h2 className="font-display text-[2.4rem] tracking-[-0.04em]">Example properties in this area</h2>
         <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {localProperties.length > 0 ? (
             localProperties.map((property) => (
@@ -46,7 +46,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
               </Link>
             ))
           ) : (
-            <p className="text-base text-[var(--text-secondary)]">No live properties listed for this area yet, but we can help find something matching your brief.</p>
+            <p className="text-base text-[var(--text-secondary)]">No illustrative listings for this area yet.</p>
           )}
         </div>
       </div>
