@@ -33,25 +33,41 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-10 max-w-5xl rounded-none border border-[rgba(255,255,255,0.2)] bg-[rgba(247,245,239,0.96)] p-3 text-[var(--text-primary)] shadow-none md:p-4">
-            <div className="grid gap-3 md:grid-cols-[auto_1fr_auto] lg:grid-cols-[auto_1fr_220px_180px]">
-              <div className="flex items-center gap-2 border border-[var(--border-subtle)] px-3 py-3 text-[11px] font-bold uppercase tracking-[0.15em] md:min-w-[120px]">
-                <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[var(--brand-yellow)]" />
-                Buy
-              </div>
-              <div className="flex items-center gap-3 border border-[var(--border-subtle)] px-3 py-3 text-sm text-[var(--text-secondary)]">
-                <span className="text-[var(--text-muted)]">Location</span>
-                <span className="text-[var(--text-primary)]">New Town</span>
-              </div>
-              <div className="flex items-center gap-3 border border-[var(--border-subtle)] px-3 py-3 text-sm text-[var(--text-secondary)]">
-                <span className="text-[var(--text-muted)]">Budget</span>
-                <span className="text-[var(--text-primary)]">Any</span>
-              </div>
-              <Link href="/properties" className="flex items-center justify-center gap-2 bg-[var(--brand-yellow)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--brand-black)]">
-                Search properties
-              </Link>
-            </div>
-          </div>
+          <form action="/properties" method="get" className="mt-10 grid max-w-5xl gap-3 border border-[rgba(255,255,255,0.2)] bg-[rgba(247,245,239,0.96)] p-3 text-[var(--text-primary)] shadow-none md:grid-cols-2 md:p-4 lg:grid-cols-[1fr_1.2fr_1fr_auto] lg:items-end">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)]">
+              I’m looking to
+              <select name="type" defaultValue="buy" className="mt-2 block h-12 w-full border border-[var(--border-subtle)] bg-white px-3 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--brand-yellow)]">
+                <option value="buy">Buy</option>
+                <option value="rent">Rent</option>
+                <option value="commercial">Find commercial space</option>
+                <option value="land">Find land</option>
+              </select>
+            </label>
+            <label className="block text-xs font-semibold text-[var(--text-secondary)]">
+              Locality
+              <select name="location" defaultValue="" className="mt-2 block h-12 w-full border border-[var(--border-subtle)] bg-white px-3 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--brand-yellow)]">
+                <option value="">Any locality</option>
+                <option value="New Town">New Town</option>
+                <option value="Salt Lake">Salt Lake</option>
+                <option value="Rajarhat">Rajarhat</option>
+                <option value="Mukundapur">Mukundapur</option>
+                <option value="VIP Road">VIP Road</option>
+                <option value="Howrah">Howrah</option>
+              </select>
+            </label>
+            <label className="block text-xs font-semibold text-[var(--text-secondary)]">
+              Maximum budget
+              <select name="maxPrice" defaultValue="" className="mt-2 block h-12 w-full border border-[var(--border-subtle)] bg-white px-3 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--brand-yellow)]">
+                <option value="">Any budget</option>
+                <option value="5000000">Up to ₹50 L</option>
+                <option value="10000000">Up to ₹1 Cr</option>
+                <option value="20000000">Up to ₹2 Cr</option>
+              </select>
+            </label>
+            <button type="submit" className="flex h-12 items-center justify-center gap-2 bg-[var(--brand-yellow)] px-5 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--brand-black)]">
+              Search properties
+            </button>
+          </form>
         </div>
       </section>
 
