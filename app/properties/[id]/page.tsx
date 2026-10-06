@@ -1,13 +1,52 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, MapPin, Phone } from 'lucide-react'
-import { getProperty, properties } from '@/lib/properties'
+import { notFound } from 'next/navigation'
 
-export function generateStaticParams() { return properties.map(({ id }) => ({ id })) }
+import { properties } from '@/data/properties'
 
-export default async function PropertyDetail({ params }: { params: Promise<{ id: string }> }) {
+export async function generateStaticParams() {
+  return properties.map((property) => ({ id: property.slug }))
+}
+
+export default async function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const property = getProperty(id)
-  if (!property) return <main className="p-10"><h1>Property not found</h1><Link href="/properties">Back to properties</Link></main>
-  return <main className="min-h-screen bg-[#f6f5f1] text-[#151515]"><header className="border-b border-black/10 bg-white"><div className="mx-auto flex h-20 max-w-[1380px] items-center justify-between px-5 lg:px-10"><Link href="/" className="flex items-center gap-2.5"><span className="flex size-10 items-center justify-center bg-[#f6c515] text-xl font-black">SS</span><span className="text-[15px] font-bold tracking-[0.18em]">PROPERTY</span></Link><Link href="/properties" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest"><ArrowLeft size={16} />All properties</Link></div></header><div className="mx-auto grid max-w-[1380px] gap-10 px-5 py-10 lg:grid-cols-[1.2fr_0.8fr] lg:px-10 lg:py-16"><div className="relative aspect-[1.1] overflow-hidden bg-black lg:aspect-[1.2]"><Image src={property.image} alt={property.title} fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 65vw" /></div><div className="flex flex-col justify-center"><p className="text-xs font-bold uppercase tracking-[0.22em] text-black/45">{property.id} · {property.tag}</p><h1 className="mt-4 text-5xl font-semibold leading-[0.96] tracking-[-0.06em] lg:text-7xl">{property.title}</h1><p className="mt-5 flex items-center gap-2 text-black/55"><MapPin size={16} />{property.location}</p><p className="mt-9 text-4xl font-bold">{property.price}</p><p className="mt-2 text-sm text-black/50">{property.meta}</p><p className="mt-8 max-w-md text-base leading-8 text-black/60">{property.description}</p><Link href={`/contact?property=${property.id}`} className="mt-9 flex w-fit items-center gap-3 bg-[#f6c515] px-7 py-4 text-xs font-bold uppercase tracking-widest transition hover:bg-black hover:text-white">Enquire about this property <ArrowRight size={16} /></Link><a href="tel:+919830000000" className="mt-4 flex w-fit items-center gap-3 text-xs font-bold uppercase tracking-widest"><Phone size={15} /> Speak with an advisor</a></div></div></main>
+  const property = properties.find((item) => item.slug === id || item.id === id)
+
+  if (!property) {
+    notFound()
+  }
+
+  return (
+    <article className="mx-auto max-w-[1360px] px-4 py-16 md:px-6 lg:px-8">
+      <Link href="/properties" className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">← Back to properties</Link>
+
+      <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+        <div>
+          <div className="relative aspect-[1.35] overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-primary)]">
+            <Image src={property.image} alt={property.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 65vw" />
+          </div>
+        </div>
+
+        <div className="border border-[var(--border-subtle)] bg-[var(--surface-primary)] p-6 md:p-8">
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">{property.id}</p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] md:text-[3.1rem]">{property.title}</h1>
+          <p className="mt-3 text-base text-[var(--text-secondary)]">{property.locality}, Kolkata</p>
+          <p className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">{property.price}</p>
+          <p className="mt-4 text-base leading-7 text-[var(--text-secondary)]">{property.description}</p>
+          <div className="mt-6 flex flex-wrap gap-3 text-[11px] font-bold uppercase tracking-[0.18em]">
+            <span className="border border-[var(--border-subtle)] px-3 py-2">{property.status}</span>
+            <span className="border border-[var(--border-subtle)] px-3 py-2">{property.category}</span>
+          </div>
+          <div className="mt-8 flex gap-3">
+            <Link href="/contact" className="inline-flex items-center justify-center bg-[var(--brand-yellow)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--brand-black)]">
+              Enquire now
+            </Link>
+            <Link href="/properties" className="inline-flex items-center justify-center border border-[var(--border-subtle)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-primary)]">
+              View more
+            </Link>
+          </div>
+        </div>
+      </div>
+    </article>
+  )
 }
